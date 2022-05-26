@@ -1,5 +1,4 @@
 import twophase.solver as sv
-import Mover
 import StateGenerator
 import ScrambleGenerator as scrambler
 
