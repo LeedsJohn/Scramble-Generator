@@ -9,7 +9,7 @@ Uses syntax from https://github.com/hkociemba/RubiksCube-TwophaseSolver
 
 
 class Mover:
-    def __init__(self, cubestring = ""):
+    def __init__(self, cubestring=""):
         self.cubelist = list(cubestring)
 
     def __str__(self):
@@ -47,15 +47,26 @@ class Mover:
         move
         Rotates the cube
         dir: str
-          Which direction to rotate the cube. Valid directions: R, U, F, L, D, B
+          Which direction to rotate the cube. Valid directions: R, U, F, L, D, B, 
+          M, E, S, x, y, z
         """
         movePatterns = {"R": (1, (5, 48, 32, 23), (8, 45, 35, 26), (2, 51, 29, 20)),
                         "U": (0, (19, 37, 46, 10), (20, 38, 47, 11), (18, 36, 45, 9)),
                         "F": (2, (7, 12, 28, 41), (8, 15, 27, 38), (6, 9, 29, 44)),
                         "L": (4, (3, 21, 30, 50), (0, 18, 27, 53), (6, 24, 33, 47)),
                         "D": (3, (25, 16, 52, 43), (24, 15, 51, 42), (26, 17, 53, 44)),
-                        "B": (5, (1, 39, 34, 14), (0, 42, 35, 11), (2, 36, 33, 17))}
-        self.__swapStickers(movePatterns[dir][1:], movePatterns[dir][0]*9)
+                        "B": (5, (1, 39, 34, 14), (0, 42, 35, 11), (2, 36, 33, 17)),
+                        "M": (-1, (4, 22, 31, 49), (1, 19, 28, 52), (7, 25, 34, 46)),
+                        "S": (-1, (4, 13, 31, 40), (3, 10, 32, 43), (5, 16, 30, 37)),
+                        "E": (-1, (22, 13, 49, 40), (21, 12, 48, 39), (23, 14, 50, 41))}
+        translations = {"y": "U E' D'", "x": "R M' L'", "z": "F S B'",
+                        "r": "R M'", "u": "U E'", "f": "F S",
+                        "l": "L M", "d": "D E", "b": "B S'"}
+        if dir in "RUFLDBMSE":
+            self.__swapStickers(movePatterns[dir][1:], movePatterns[dir][0]*9)
+
+        elif dir in "yxzrufldb":
+            self.scramble(translations[dir])
 
     def scramble(self, scramble):
         """
@@ -63,7 +74,7 @@ class Mover:
         receives a set of moves and applies them to the cube
         """
         for i, c in enumerate(scramble):
-            if c in "RUFLDB":
+            if c in "RUFLDBrufldbMSExyz":
                 rotationCount = 1
                 if i == len(scramble) - 1:
                     rotationCount = 1
@@ -83,7 +94,7 @@ class Mover:
         reversed = ""
         prev = "*"
         for c in scramble[::-1]:
-            if c in "RUFLDB":
+            if c in "RUFLDBrufldbMSExyz":
                 reversed += c
                 if prev == ' ' or prev == '*':
                     reversed += "'"
@@ -116,6 +127,8 @@ class Mover:
                 self.cubelist[movePattern[piece][i]
                               ] = cubelistCopy[movePattern[piece][i-1]]
 
+        if start == -9:  # for slice moves - no need to rotate face
+            return
         for piece in range(2):
             for i in range(4):
                 self.cubelist[FACE_ROTATION[piece][i] +
