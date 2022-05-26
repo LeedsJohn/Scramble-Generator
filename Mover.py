@@ -59,14 +59,15 @@ class Mover:
                         "M": (-1, (4, 22, 31, 49), (1, 19, 28, 52), (7, 25, 34, 46)),
                         "S": (-1, (4, 13, 31, 40), (3, 10, 32, 43), (5, 16, 30, 37)),
                         "E": (-1, (22, 13, 49, 40), (21, 12, 48, 39), (23, 14, 50, 41))}
-        translations = {"y": "U E' D'", "x": "R M' L'", "z": "F S B'",
-                        "r": "R M'", "u": "U E'", "f": "F S",
-                        "l": "L M", "d": "D E", "b": "B S'"}
-        if dir in "RUFLDBMSE":
+        # translations = {"y": "U E' D'", "x": "R M' L'", "z": "F S B'",
+        #                 "r": "R M'", "u": "U E'", "f": "F S",
+        #                 "l": "L M", "d": "D E", "b": "B S'",
+        #                 "M": "M x", "S": "S z'", "E": "E y"}
+        if dir in "RUFLDB":
             self.__swapStickers(movePatterns[dir][1:], movePatterns[dir][0]*9)
 
-        elif dir in "yxzrufldb":
-            self.scramble(translations[dir])
+        # elif dir in "yxzrufldbMSE":
+        #     self.scramble(translations[dir])
 
     def scramble(self, scramble):
         """
