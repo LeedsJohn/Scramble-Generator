@@ -5,40 +5,41 @@ StateGenerator.py
 
 Takes a text file of scrambles and creates a text file of cubestrings
 """
+import json # dumping dictionary
 import Mover
 
+SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
 
 class StateGenerator:
     def __init__(self):
         self.mover = Mover.Mover()
-        self.input_file = input("Enter the name of your input file: ")
-        self.output_file = input("Enter the name of your output file: ")
+        self.input_file = input("STATE GENERATOR - Enter the name of your input file: ")
+        self.output_file = input("STATE GENERATOR - Enter the name of your output file: ")
         self.scrambles = self.getScrambles()
         self.states = self.getStates()
 
     def getScrambles(self):
         """
         getScrambles
-        Takes data from the input file and creates a list of scrambles
+        Takes data from the input file and creates a dictionary of scrambles
         """
         with open(f"{DATA_PATH}{self.input_file}") as f:
             scrambles = f.readlines()
-        return scrambles
+        return {scrambles[i].strip():scrambles[i+1].strip() for i in range(0, len(scrambles), 2)}
     
     def getStates(self):
         """
         getStates
-        Turns the list of scrambles into a list of cubestrings by reversing the 
+        Turns the list of scrambles into a dictionary of cubestrings by reversing the 
         scramble and applying it to a cube
         """
-        SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
-        states = []
-        for scramble in self.scrambles:
+        states = {}
+        for name in self.scrambles:
             self.mover.setCubelist(SOLVED_STATE)
-            reversedScramble = self.mover.reverse(scramble)
+            reversedScramble = self.mover.reverse(self.scrambles[name])
             self.mover.scramble(reversedScramble)
-            states.append(self.mover.getCubestring())
+            states[name] = self.mover.getCubestring()
         return states
 
     def writeStates(self):
@@ -47,5 +48,4 @@ class StateGenerator:
         Creates a .txt file with one cubestring per line.
         """
         with open(f"{DATA_PATH}{self.output_file}", "w") as f:
-            for state in self.states:
-                f.write(f"{state}\n")
+            json.dump(self.states, f)
