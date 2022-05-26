@@ -3,3 +3,4 @@ twophase
 __pycache__
 Data/*
 !Data/.gitkeep
+test.py
