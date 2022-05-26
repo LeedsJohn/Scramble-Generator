@@ -15,7 +15,7 @@ import Mover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
-NUM_SCRAMBLES = 10 # how many scrambles to generate for each case
+NUM_SCRAMBLES = 3 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
 SOLVE_TIME = 2 # how long to give the solver to generate a solution
@@ -45,6 +45,7 @@ class ScrambleGenerator:
         """
         scrambles = {}
         for state in self.states:
+            print(state)
             scrambles[state] = []
             i = 0
             while i < NUM_SCRAMBLES:
