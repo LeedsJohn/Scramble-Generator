@@ -99,6 +99,9 @@ class Mover:
         """
         return "".join(self.cubelist)
 
+    def setCubelist(self, cubestring):
+        self.cubelist = list(cubestring)
+
     def __swapStickers(self, movePattern, start):
         """
         swapStickers
