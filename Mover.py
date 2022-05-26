@@ -9,7 +9,7 @@ Uses syntax from https://github.com/hkociemba/RubiksCube-TwophaseSolver
 
 
 class Mover:
-    def __init__(self, cubestring):
+    def __init__(self, cubestring = ""):
         self.cubelist = list(cubestring)
 
     def __str__(self):
@@ -81,17 +81,16 @@ class Mover:
         Ex: "R U D' L F2" --> "F2 L' D U' R'"
         """
         reversed = ""
-        for i, c in enumerate(scramble[::-1]):
+        prev = "*"
+        for c in scramble[::-1]:
             if c in "RUFLDB":
                 reversed += c
-                if i != 0:
-                    if scramble[i-1] == '2':
-                        reversed += '2'
-                    elif scramble[i-1] == ' ':
-                        reversed += "'"
-                reversed += " "
-            print(f"c: {c}\t current: {reversed}")
-
+                if prev == ' ':
+                    reversed += "'"
+                elif prev == "2":
+                    reversed += "2"
+                reversed += ' '
+            prev = c
         return reversed.strip()
 
     def getCubestring(self):
