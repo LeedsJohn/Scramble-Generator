@@ -85,7 +85,7 @@ class Mover:
         for c in scramble[::-1]:
             if c in "RUFLDB":
                 reversed += c
-                if prev == ' ':
+                if prev == ' ' or prev == '*':
                     reversed += "'"
                 elif prev == "2":
                     reversed += "2"
