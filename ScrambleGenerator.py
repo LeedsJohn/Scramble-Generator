@@ -112,9 +112,7 @@ class ScrambleGenerator:
         scramble = [move for move in scramble if move != '']
         newScramble = []
         
-        print(f"---------------------------\nScramble: {scramble}")
         for move in scramble:
-            print(f"move: {move}")
             if not newScramble:
                 newScramble.append(move)
             elif newScramble[-1][0] != move[0]:
