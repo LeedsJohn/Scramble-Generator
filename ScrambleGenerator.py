@@ -15,18 +15,21 @@ import Mover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
-NUM_SCRAMBLES = 1 # how many scrambles to generate for each case
+NUM_SCRAMBLES = 3  # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
-SOLVE_TIME = 2 # how long to give the solver to generate a solution
-MOVE_COUNT = 12 # stop when you've discovered an algorithm that's this length
-RANDOM_AUF = True # whether the orientation should be randomized
+SOLVE_TIME = 0.5  # how long to give the solver to generate a solution
+MOVE_COUNT = 12  # stop when you've discovered an algorithm that's this length
+RANDOM_AUF = True  # whether the orientation should be randomized
+
 
 class ScrambleGenerator:
     def __init__(self):
         self.mover = Mover.Mover()
-        self.input_file = input("SCRAMBLE GENERATOR - Enter the name of your input file: ")
-        self.output_file = input("SCRAMBLE GENERATOR - Enter the name of your output file: ")
+        self.input_file = input(
+            "SCRAMBLE GENERATOR - Enter the name of your input file: ")
+        self.output_file = input(
+            "SCRAMBLE GENERATOR - Enter the name of your output file: ")
         self.states = self.getStates()
         self.scrambles = self.getScrambles()
 
@@ -50,7 +53,7 @@ class ScrambleGenerator:
             i = 0
             while i < NUM_SCRAMBLES:
                 scramble = self.__getScramble(self.states[state])
-                if scramble not in scrambles[state]: # no duplicates
+                if scramble not in scrambles[state]:  # no duplicates
                     scrambles[state].append(scramble)
                     i += 1
         return scrambles
@@ -74,7 +77,8 @@ class ScrambleGenerator:
         self.mover.scramble(premoves)
         updatedGoalstring = self.mover.getCubestring()
 
-        scramble = sv.solveto(SOLVED_STATE, updatedGoalstring, MOVE_COUNT, SOLVE_TIME)
+        scramble = sv.solveto(
+            SOLVED_STATE, updatedGoalstring, MOVE_COUNT, SOLVE_TIME)
         scramble = self.__fixScramble(scramble, postmoves)
         return scramble.strip()
 
@@ -83,7 +87,7 @@ class ScrambleGenerator:
         Performs a random number of U turns
         """
         self.mover.setCubelist(goalstring)
-        for i in range(random.randrange(0,4)):
+        for i in range(random.randrange(0, 4)):
             self.mover.move("U")
         return self.mover.getCubestring()
 
@@ -105,12 +109,15 @@ class ScrambleGenerator:
         scramble = scramble[:scramble.find("(")]
         scramble += postmoves
         scramble = scramble.split(" ")
+        scramble = [move for move in scramble if move != '']
         newScramble = []
-
+        
+        print(f"---------------------------\nScramble: {scramble}")
         for move in scramble:
+            print(f"move: {move}")
             if not newScramble:
                 newScramble.append(move)
-            elif not newScramble[-1] or newScramble[-1][0] != move[0]:
+            elif newScramble[-1][0] != move[0]:
                 suffix = self.__rotationsToSuffix(self.__turnsInAMove(move))
                 newScramble.append(move[0] + suffix)
             else:
@@ -119,15 +126,16 @@ class ScrambleGenerator:
                 if totalTurns % 4 == 0:
                     newScramble.pop()
                 else:
-                    newScramble[-1] = newScramble[-1][0] + self.__rotationsToSuffix(totalTurns)
+                    newScramble[-1] = newScramble[-1][0] + \
+                        self.__rotationsToSuffix(totalTurns)
 
-        for i, move in enumerate(newScramble): # TODO: this is a lazy fix
+        for i, move in enumerate(newScramble):  # TODO: this is a lazy fix
             if move[-1] == "3":
                 newScramble[i] = move[0] + "'"
             elif move[-1] == "1":
                 newScramble[i] = move[0]
         i = 0
-        while True: # CROP LEADING U MOVES
+        while True:  # CROP LEADING U MOVES
             if newScramble[i][0] != 'U':
                 return " ".join(newScramble[i:])
             i += 1
@@ -150,4 +158,3 @@ class ScrambleGenerator:
             return "'"
         if numRotations == 2:
             return '2'
-        
