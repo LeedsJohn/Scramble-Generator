@@ -69,7 +69,7 @@ class StateGenerator:
         returns a list of scrambles to PLLs
         """
         pll = self._readPLL()
-        return [pll[case] for case in pll]
+        return [pll[case].strip() + " " for case in pll]
 
     def _getEdgePLLs(self):
         """
@@ -77,7 +77,7 @@ class StateGenerator:
         Returns a list of scrambles to edge PLLs
         """
         pll = self._readPLL()
-        return [pll[case] for case in pll if case in ("Ua", "Ub", "Z", "H")]
+        return [pll[case].strip() + " " for case in pll if case in ("Ua", "Ub", "Z", "H")]
     
     def _readPLL(self):
         """
