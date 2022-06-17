@@ -17,10 +17,10 @@ class StateGenerator:
         self.mover = Mover.Mover()
         self.input_file = input_file
         self.output_file = output_file
+        self.solve_to = solve_to
         self.scrambles = self.getScrambles()
         self.states = self.getStates()
         # specify what stage to solve the cube to - solved, PLL, L4E (last four edges)
-        self.solve_to = solve_to
 
     def getScrambles(self):
         """
@@ -40,9 +40,9 @@ class StateGenerator:
         states = {}
         start_moves = [""] # every case should have the empty scramble applied
         if self.solve_to == "PLL":
-            start_moves += self._applyPLL()
+            start_moves += self._getPLLs()
         elif self.solve_to == "L4E":
-            start_moves += self._applyEdgePLL()
+            start_moves += self._getEdgePLLs()
 
         for name in self.scrambles:
             self.mover.setCubelist(SOLVED_STATE)
