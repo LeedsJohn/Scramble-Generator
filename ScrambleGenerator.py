@@ -16,7 +16,7 @@ import Mover
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
 MIN_MOVECOUNT = 8
-NUM_SCRAMBLES = 3 # how many scrambles to generate for each case
+NUM_SCRAMBLES = 1 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
 SOLVE_TIME = 1 # how long to give the solver to generate a solution
@@ -105,7 +105,6 @@ class ScrambleGenerator:
         """
         Formats a scramble nicely
         """
-        print(f"Scramble: {scramble}\tpostmoves: {postmoves}")
         # cut off the end (___f)
         scramble = scramble[:scramble.find("(")]
         scramble += postmoves
@@ -115,7 +114,6 @@ class ScrambleGenerator:
         newScramble = []
 
         for move in scramble:
-            print(f"newScramble: {newScramble}\tmove: {move}")
             if not newScramble:
                 newScramble.append(move)
             elif not newScramble[-1] or newScramble[-1][0] != move[0]:
