@@ -15,7 +15,8 @@ import Mover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
-MIN_MOVECOUNT = 12
+MIN_MOVECOUNT = 8
+GOAL_MOVECOUNT = 12 # stop once you have found a scramble that is this length
 NUM_SCRAMBLES = 20 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
@@ -78,7 +79,7 @@ class ScrambleGenerator:
         self.mover.scramble(premoves)
         updatedGoalstring = self.mover.getCubestring()
 
-        scramble = sv.solveto(SOLVED_STATE, updatedGoalstring, MIN_MOVECOUNT, SOLVE_TIME)
+        scramble = sv.solveto(SOLVED_STATE, updatedGoalstring, GOAL_MOVECOUNT, SOLVE_TIME)
         scramble = self._fixScramble(scramble, postmoves)
         return scramble.strip()
 
