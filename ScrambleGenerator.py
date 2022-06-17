@@ -17,7 +17,7 @@ SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
 MIN_MOVECOUNT = 8
 GOAL_MOVECOUNT = 12 # stop once you have found a scramble that is this length
-NUM_SCRAMBLES = 20 # how many scrambles to generate for each case
+NUM_SCRAMBLES = 10 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
 SOLVE_TIME = 1 # how long to give the solver to generate a solution
