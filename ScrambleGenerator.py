@@ -15,8 +15,8 @@ import Mover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
-MIN_MOVECOUNT = 8
-NUM_SCRAMBLES = 1 # how many scrambles to generate for each case
+MIN_MOVECOUNT = 12
+NUM_SCRAMBLES = 20 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
 SOLVE_TIME = 1 # how long to give the solver to generate a solution
@@ -55,7 +55,7 @@ class ScrambleGenerator:
                 if self._scrambleLength(scramble) < MIN_MOVECOUNT or scramble not in scrambles[state]: # no duplicates
                     scrambles[state].append(scramble)
                     i += 1
-                else:
+                elif premoveCount <= MIN_MOVECOUNT/2:
                     premoveCount += 1
         return scrambles
 
