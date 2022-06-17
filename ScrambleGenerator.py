@@ -15,21 +15,19 @@ import Mover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
-NUM_SCRAMBLES = 3  # how many scrambles to generate for each case
+MIN_MOVECOUNT = 8
+GOAL_MOVECOUNT = 12 # stop once you have found a scramble that is this length
+NUM_SCRAMBLES = 10 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "L", "D", "B", "R'",
                "U'", "F'", "L'", "D'", "B'", "")
-SOLVE_TIME = 0.5  # how long to give the solver to generate a solution
-MOVE_COUNT = 12  # stop when you've discovered an algorithm that's this length
-RANDOM_AUF = True  # whether the orientation should be randomized
-
+SOLVE_TIME = 1 # how long to give the solver to generate a solution
+RANDOM_AUF = True # whether the orientation should be randomized
 
 class ScrambleGenerator:
-    def __init__(self):
+    def __init__(self, input_file, output_file):
         self.mover = Mover.Mover()
-        self.input_file = input(
-            "SCRAMBLE GENERATOR - Enter the name of your input file: ")
-        self.output_file = input(
-            "SCRAMBLE GENERATOR - Enter the name of your output file: ")
+        self.input_file = input_file
+        self.output_file = output_file
         self.states = self.getStates()
         self.scrambles = self.getScrambles()
 
@@ -48,14 +46,18 @@ class ScrambleGenerator:
         """
         scrambles = {}
         for state in self.states:
+            premoveCount = 0
             print(state)
             scrambles[state] = []
             i = 0
             while i < NUM_SCRAMBLES:
-                scramble = self.__getScramble(self.states[state])
-                if scramble not in scrambles[state]:  # no duplicates
+                goalState = random.choice(self.states[state])
+                scramble = self._getScramble(goalState, premoveCount)
+                if self._scrambleLength(scramble) < MIN_MOVECOUNT or scramble not in scrambles[state]: # no duplicates
                     scrambles[state].append(scramble)
                     i += 1
+                elif premoveCount <= MIN_MOVECOUNT/2:
+                    premoveCount += 1
         return scrambles
 
     def writeScrambles(self):
@@ -65,24 +67,23 @@ class ScrambleGenerator:
         with open(f"{DATA_PATH}{self.output_file}", "w") as f:
             json.dump(self.scrambles, f)
 
-    def __getScramble(self, goalstring):
+    def _getScramble(self, goalstring, premoveCount):
         """
         Generates a scramble to a state with several premoves appended
         """
         if RANDOM_AUF:
-            goalstring = self.__randomAUF(goalstring)
-        premoves = self.__getPremove()
+            goalstring = self._randomAUF(goalstring)
+        premoves = self._getPremove(premoveCount)
         postmoves = self.mover.reverse(premoves)
         self.mover.setCubelist(goalstring)
         self.mover.scramble(premoves)
         updatedGoalstring = self.mover.getCubestring()
 
-        scramble = sv.solveto(
-            SOLVED_STATE, updatedGoalstring, MOVE_COUNT, SOLVE_TIME)
-        scramble = self.__fixScramble(scramble, postmoves)
+        scramble = sv.solveto(SOLVED_STATE, updatedGoalstring, GOAL_MOVECOUNT, SOLVE_TIME)
+        scramble = self._fixScramble(scramble, postmoves)
         return scramble.strip()
 
-    def __randomAUF(self, goalstring):
+    def _randomAUF(self, goalstring):
         """
         Performs a random number of U turns
         """
@@ -91,7 +92,7 @@ class ScrambleGenerator:
             self.mover.move("U")
         return self.mover.getCubestring()
 
-    def __getPremove(self, numMoves=2):
+    def _getPremove(self, numMoves=2):
         """
         Returns a string of a designated number of random moves
         """
@@ -101,7 +102,7 @@ class ScrambleGenerator:
             premoves += ' '
         return premoves.strip(' ')
 
-    def __fixScramble(self, scramble, postmoves):
+    def _fixScramble(self, scramble, postmoves):
         """
         Formats a scramble nicely
         """
@@ -109,23 +110,23 @@ class ScrambleGenerator:
         scramble = scramble[:scramble.find("(")]
         scramble += postmoves
         scramble = scramble.split(" ")
-        scramble = [move for move in scramble if move != '']
+        if "" in scramble:
+            scramble.remove("")
         newScramble = []
         
         for move in scramble:
             if not newScramble:
                 newScramble.append(move)
-            elif newScramble[-1][0] != move[0]:
-                suffix = self.__rotationsToSuffix(self.__turnsInAMove(move))
+            elif not newScramble[-1] or newScramble[-1][0] != move[0]:
+                suffix = self._rotationsToSuffix(self._turnsInAMove(move))
                 newScramble.append(move[0] + suffix)
             else:
-                totalTurns = self.__turnsInAMove(
-                    move) + self.__turnsInAMove(newScramble[-1])
+                totalTurns = self._turnsInAMove(
+                    move) + self._turnsInAMove(newScramble[-1])
                 if totalTurns % 4 == 0:
                     newScramble.pop()
                 else:
-                    newScramble[-1] = newScramble[-1][0] + \
-                        self.__rotationsToSuffix(totalTurns)
+                    newScramble[-1] = newScramble[-1][0] + self._rotationsToSuffix(totalTurns)
 
         for i, move in enumerate(newScramble):  # TODO: this is a lazy fix
             if move[-1] == "3":
@@ -138,7 +139,7 @@ class ScrambleGenerator:
                 return " ".join(newScramble[i:])
             i += 1
 
-    def __turnsInAMove(self, move):
+    def _turnsInAMove(self, move):
         """
         Determines how many times a cube face is rotated
         """
@@ -148,7 +149,7 @@ class ScrambleGenerator:
             return 3
         return 1
 
-    def __rotationsToSuffix(self, numRotations):
+    def _rotationsToSuffix(self, numRotations):
         numRotations = numRotations % 4
         if numRotations == 0 or numRotations == 1:
             return ''
@@ -156,3 +157,14 @@ class ScrambleGenerator:
             return "'"
         if numRotations == 2:
             return '2'
+
+    def _scrambleLength(self, scramble):
+        """
+        _scrambleLength(scramble)
+        Returns the move count of a scramble
+        """
+        moveCount = 0
+        for c in scramble:
+            if c in "RUFLDB":
+                moveCount += 1
+        return moveCount
