@@ -70,7 +70,7 @@ class Mover:
         elif dir in "yxzrufldbMSE":
             self.scramble(translations[dir])
 
-    def scramble(self, scramble):
+    def scramble(self, scramble, orient = False):
         """
         scramble
         receives a set of moves and applies them to the cube
@@ -87,6 +87,8 @@ class Mover:
 
                 for j in range(rotationCount):
                     self.move(c)
+        if orient:
+            self.__orient()
 
     def reverse(self, scramble):
         """
