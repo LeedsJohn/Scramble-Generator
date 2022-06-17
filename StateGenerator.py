@@ -38,19 +38,20 @@ class StateGenerator:
         scramble and applying it to a cube
         """
         states = {}
-        start_moves = [""] # every case should have the empty scramble applied
+        startMoves = [""] # every case should have the empty scramble applied
         if self.solve_to == "PLL":
-            start_moves += self._getPLLs()
+            startMoves += self._getPLLs()
         elif self.solve_to == "L4E":
-            start_moves += self._getEdgePLLs()
+            startMoves += self._getEdgePLLs()
 
         for name in self.scrambles:
-            self.mover.setCubelist(SOLVED_STATE)
-            reversedScramble = self.mover.reverse(self.scrambles[name])
+            reversedCase = self.mover.reverse(self.scrambles[name])
             goalstates = []
-            for start_move in start_moves:
-                fullScramble = start_move + reversedScramble
-                self.mover.scramble(fullScramble)
+            for startMove in startMoves:
+                self.mover.setCubelist(SOLVED_STATE)
+                reversedStartMove = self.mover.reverse(startMove)
+                self.mover.scramble(reversedStartMove)
+                self.mover.scramble(reversedCase)
                 goalstates.append(self.mover.getCubestring())
             states[name] = goalstates
         return states
