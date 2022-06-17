@@ -105,13 +105,17 @@ class ScrambleGenerator:
         """
         Formats a scramble nicely
         """
+        print(f"Scramble: {scramble}\tpostmoves: {postmoves}")
         # cut off the end (___f)
         scramble = scramble[:scramble.find("(")]
         scramble += postmoves
         scramble = scramble.split(" ")
+        if "" in scramble:
+            scramble.remove("")
         newScramble = []
 
         for move in scramble:
+            print(f"newScramble: {newScramble}\tmove: {move}")
             if not newScramble:
                 newScramble.append(move)
             elif not newScramble[-1] or newScramble[-1][0] != move[0]:
@@ -164,3 +168,4 @@ class ScrambleGenerator:
         for c in scramble:
             if c in "RUFLDB":
                 moveCount += 1
+        return moveCount
