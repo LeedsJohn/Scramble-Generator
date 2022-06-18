@@ -1,6 +1,6 @@
 .sg_env
 twophase
 __pycache__
-Data/*
-!Data/.gitkeep
+Data/*/*.txt
+Data/*/*.json
 test.py
