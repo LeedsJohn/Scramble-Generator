@@ -119,6 +119,18 @@ class Mover:
     def setCubelist(self, cubestring):
         self.cubelist = list(cubestring)
 
+    def getNetRotations(self, scramble):
+        """
+        getNetRotations(scramble)
+        Returns a string representing the rotations needed to get to the end
+        orientation of the scramble.
+        """
+        originalPosition = self.cubelist
+        self.scramble(scramble)
+        rotations = self.__orient()
+        self.cubelist = originalPosition
+        return rotations
+
     def __swapStickers(self, movePattern, start):
         """
         swapStickers
@@ -144,12 +156,14 @@ class Mover:
         """
         __orient()
         Rotates the cube so that U is on top and F is in front
+        Returns the moves used to get there
         """
-        self.__UOnTop()
+        rotations = self.__UOnTop() + " "
         for i in range(5):
             if self.cubelist[22] == "F":
-                return
+                return rotations
             self.move("y")
+            rotations += " y"
         print("Unable to rotate")
 
 
@@ -158,9 +172,11 @@ class Mover:
         __UOnTop()
         Helper function for __orient
         Rotates the cube so that the U face is positioned correctly.
+        Returns the moves used to get there
         """
+        rotations = ""
         positionToRotation = {22: "x", 49: "x'", 40: "z", 13: "z'", 31: "x2"}
         for position in positionToRotation:
             if self.cubelist[position] == "U":
                 self.scramble(positionToRotation[position])
-                return
+                return positionToRotation[position]
