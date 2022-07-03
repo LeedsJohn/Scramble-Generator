@@ -49,8 +49,7 @@ class StateGenerator:
             goalstates = []
             for startMove in startMoves:
                 self.mover.setCubelist(SOLVED_STATE)
-                reversedStartMove = self.mover.reverse(startMove)
-                self.mover.scramble(reversedStartMove, True)
+                self.mover.scramble(startMove, True)
                 self.mover.scramble(reversedCase, True)
                 goalstates.append(self.mover.getCubestring())
             states[name] = goalstates
