@@ -45,12 +45,12 @@ class StateGenerator:
             startMoves += self._getEdgePLLs()
 
         for name in self.scrambles:
-            reversedCase = self.mover.reverse(self.scrambles[name])
+            reversedCase = f"{self.mover.getNetRotations(self.scrambles[name])} {self.mover.reverse(self.scrambles[name])}"
             goalstates = []
             for startMove in startMoves:
                 self.mover.setCubelist(SOLVED_STATE)
-                self.mover.scramble(startMove, True)
-                self.mover.scramble(reversedCase, True)
+                self.mover.scramble(startMove)
+                self.mover.scramble(reversedCase)
                 goalstates.append(self.mover.getCubestring())
             states[name] = goalstates
         return states

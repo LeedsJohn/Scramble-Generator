@@ -125,11 +125,20 @@ class Mover:
         Returns a string representing the rotations needed to get to the end
         orientation of the scramble.
         """
-        originalPosition = self.cubelist
-        self.scramble(scramble)
-        rotations = self.__orient()
-        self.cubelist = originalPosition
-        return rotations
+        rotations = []
+        scramble = scramble.split()
+        rotationDirections = {"x": ["x", "r", "l'", "M'"], "x'": ["x'", "r'", "l", "M"],
+                              "x2": ["x2", "r2", "l2", "M2"], "y": ["y", "u", "d'", "E'"],
+                              "y'": ["y'", "u'", "u", "E"], "y2": ["y2", "u2", "d2", "E2"],
+                              "z": ["z", "f", "b'", "S"], "z'": ["z'", "f'", "b", "S'"],
+                              "z2": ["z2", "f2", "b2", "S2"]}
+        for move in scramble:
+            for dir in rotationDirections:
+                if move in rotationDirections[dir]:
+                    rotations.append(dir)
+                    break
+        return " ".join(rotations)
+
 
     def __swapStickers(self, movePattern, start):
         """
@@ -180,3 +189,4 @@ class Mover:
             if self.cubelist[position] == "U":
                 self.scramble(positionToRotation[position])
                 return positionToRotation[position]
+        return rotations
