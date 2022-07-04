@@ -4,3 +4,5 @@ __pycache__
 Data/*/*.txt
 Data/*/*.json
 test.py
+cornerprun
+move_cornperm
