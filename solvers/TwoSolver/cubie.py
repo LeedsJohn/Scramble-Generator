@@ -1,9 +1,9 @@
 # ######### The 2x2x2 cube on the cubie level is described by the permutation and orientations of the corners ##########
 
-from defs import cornerFacelet, cornerColor, N_CORNERS, N_TWIST
-from enums import Color, Corner as Co
-import face
-from misc import rotate_left, rotate_right
+from solvers.TwoSolver.defs import cornerFacelet, cornerColor, N_CORNERS, N_TWIST
+from solvers.TwoSolver.enums import Color, Corner as Co
+import solvers.TwoSolver.face as face
+from solvers.TwoSolver.misc import rotate_left, rotate_right
 from random import randrange
 
 # ################## the basic six cube moves described by permutations and changes in orientation #####################

@@ -2,9 +2,9 @@
 
 from os import path
 import array as ar
-import cubie as cb
-import enums
-from defs import N_TWIST, N_CORNERS, N_MOVE
+import solvers.TwoSolver.cubie as cb
+import solvers.TwoSolver.enums as enums
+from solvers.TwoSolver.defs import N_TWIST, N_CORNERS, N_MOVE
 
 a = cb.CubieCube()
 # ############################ Move table for the the corners. ##################################

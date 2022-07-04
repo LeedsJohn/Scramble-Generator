@@ -1,11 +1,11 @@
 # ###################### The solve function computes all optimal solving maneuvers #####################################
-import face
-import cubie
-import coord
-import enums as en
-import moves as mv
-import pruning as pr
-from defs import N_TWIST
+import solvers.TwoSolver.face as face
+import solvers.TwoSolver.cubie as cubie
+import solvers.TwoSolver.coord as coord
+import solvers.TwoSolver.enums as en
+import solvers.TwoSolver.moves as mv
+import solvers.TwoSolver.pruning as pr
+from solvers.TwoSolver.defs import N_TWIST
 
 solutions = []
 

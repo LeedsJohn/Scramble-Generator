@@ -1,9 +1,9 @@
 # ##################### The pruning table cuts the search tree during the search. ######################################
 # ########################## In this case it it gives the exact distance to the solved state. ##########################
 
-import defs
-import enums
-import moves as mv
+import solvers.TwoSolver.defs as defs
+import solvers.TwoSolver.enums as enums
+import solvers.TwoSolver.moves as mv
 from os import path
 import array as ar
 

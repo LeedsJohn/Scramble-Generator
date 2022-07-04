@@ -1,8 +1,8 @@
 # ####### The 2x2x2 cube on the facelet level is described by positions of the colored stickers. #######################
 
-from defs import cornerFacelet, cornerColor
-from enums import Color, Corner
-from cubie import CubieCube, CUBE_OK
+from solvers.TwoSolver.defs import cornerFacelet, cornerColor
+from solvers.TwoSolver.enums import Color, Corner
+from solvers.TwoSolver.cubie import CubieCube, CUBE_OK
 
 
 class FaceCube:
