@@ -6,7 +6,7 @@ StateGenerator.py
 Takes a text file of scrambles and creates a text file of cubestrings
 """
 import json  # dumping dictionary
-import Mover
+import movers.ThreeMover as ThreeMover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
@@ -14,7 +14,7 @@ DATA_PATH = "./Data/"
 
 class StateGenerator:
     def __init__(self, input_file, output_file, solve_to):
-        self.mover = Mover.Mover()
+        self.mover = ThreeMover.Mover()
         self.input_file = input_file
         self.output_file = output_file
         self.solve_to = solve_to

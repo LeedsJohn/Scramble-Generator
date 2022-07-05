@@ -11,7 +11,7 @@ https://github.com/hkociemba/RubiksCube-TwophaseSolver
 import json  # loading / dumping dictionaries
 import random  # adding random moves before scrambles
 import twophase.solver as sv  # https://github.com/hkociemba/RubiksCube-TwophaseSolver
-import Mover
+import movers.ThreeMover as ThreeMover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "./Data/"
@@ -25,7 +25,7 @@ RANDOM_AUF = True # whether the orientation should be randomized
 
 class ScrambleGenerator:
     def __init__(self, input_file, output_file):
-        self.mover = Mover.Mover()
+        self.mover = ThreeMover.Mover()
         self.input_file = input_file
         self.output_file = output_file
         self.states = self.getStates()

@@ -1,6 +1,6 @@
 import twophase.solver as sv
-import StateGenerator
-import ScrambleGenerator as scrambler
+import state_generators.ThreeStates as ThreeStates
+import scramble_generators.ThreeScrambles as scrambler
 
 
 def main():
@@ -9,7 +9,7 @@ def main():
                "ZBLL_H": "solved", "ZBLL_L": "solved", "ZBLL_Pi": "solved", "ZBLL_S": "solved", "ZBLL_T": "solved", "ZBLL_U": "solved"}
     for algSet in algSets:
         print(algSet)
-        state_gen = StateGenerator.StateGenerator(
+        state_gen = ThreeStates.StateGenerator(
             f"input/{algSet}.txt", f"states/{algSet}.json", algSets[algSet])
         state_gen.writeStates()
 
