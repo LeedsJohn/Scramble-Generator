@@ -53,7 +53,7 @@ class ScrambleGenerator:
             while i < NUM_SCRAMBLES:
                 goalState = random.choice(self.states[state])
                 scramble = self._getScramble(goalState, premoveCount)
-                if self._scrambleLength(scramble) < MIN_MOVECOUNT or scramble not in scrambles[state]: # no duplicates
+                if self._scrambleLength(scramble) > MIN_MOVECOUNT and scramble not in scrambles[state]: # no duplicates
                     scrambles[state].append(scramble)
                     i += 1
                 elif premoveCount <= MIN_MOVECOUNT/2:
