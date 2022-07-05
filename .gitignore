@@ -1,8 +1,8 @@
 .sg_env
 twophase
 __pycache__
-Data/*/*.txt
-Data/*/*.json
+Data/*/*/*.txt
+Data/*/*/*.json
 test.py
 cornerprun
 move_cornperm
