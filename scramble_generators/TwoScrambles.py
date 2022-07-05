@@ -16,7 +16,7 @@ import movers.twoMover as mv
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
 DATA_PATH = "Data/"
 MIN_MOVECOUNT = 6
-NUM_SCRAMBLES = 5 # how many scrambles to generate for each case
+NUM_SCRAMBLES = 10 # how many scrambles to generate for each case
 VALID_MOVES = ("R", "U", "F", "R'",
                "U'", "F'", "")
 RANDOM_AUF = True # whether the orientation should be randomized
@@ -133,9 +133,7 @@ class ScrambleGenerator:
             newScramble.append(turn)
 
 
-        print(f"before reverse: {' '.join(newScramble)}")
         newScramble = self.mover.reverse(" ".join(newScramble)).split(" ")
-        print(f"After: {' '.join(newScramble)}")
         if cropLeadingU:
             i = 0
             while True:  # CROP LEADING U MOVES
