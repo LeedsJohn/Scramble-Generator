@@ -14,7 +14,7 @@ import twophase.solver as sv  # https://github.com/hkociemba/RubiksCube-Twophase
 import movers.ThreeMover as ThreeMover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
-DATA_PATH = "./Data/"
+DATA_PATH = "Data/"
 MIN_MOVECOUNT = 8
 GOAL_MOVECOUNT = 12 # stop once you have found a scramble that is this length
 NUM_SCRAMBLES = 10 # how many scrambles to generate for each case
@@ -24,10 +24,10 @@ SOLVE_TIME = 1 # how long to give the solver to generate a solution
 RANDOM_AUF = True # whether the orientation should be randomized
 
 class ScrambleGenerator:
-    def __init__(self, input_file, output_file):
+    def __init__(self, file_name):
         self.mover = ThreeMover.Mover()
-        self.input_file = input_file
-        self.output_file = output_file
+        self.input_file = f"{DATA_PATH}states/Three/{file_name}.json"
+        self.output_file = f"{DATA_PATH}scrambles/Three/{file_name}.json"
         self.states = self.getStates()
         self.scrambles = self.getScrambles()
 
@@ -36,7 +36,7 @@ class ScrambleGenerator:
         getStates
         Takes data from the input file and creates a list of states
         """
-        with open(f"{DATA_PATH}{self.input_file}") as f:
+        with open(self.input_file) as f:
             states = json.load(f)
         return states
 
@@ -64,7 +64,7 @@ class ScrambleGenerator:
         """
         Saves the scrambles json file
         """
-        with open(f"{DATA_PATH}{self.output_file}", "w") as f:
+        with open(self.output_file, "w") as f:
             json.dump(self.scrambles, f)
 
     def _getScramble(self, goalstring, premoveCount):

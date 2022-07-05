@@ -9,14 +9,14 @@ import json  # dumping dictionary
 import movers.ThreeMover as ThreeMover
 
 SOLVED_STATE = "UUUUUUUUURRRRRRRRRFFFFFFFFFDDDDDDDDDLLLLLLLLLBBBBBBBBB"
-DATA_PATH = "./Data/"
+DATA_PATH = "Data/"
 
 
 class StateGenerator:
-    def __init__(self, input_file, output_file, solve_to):
+    def __init__(self, file_name, solve_to):
         self.mover = ThreeMover.Mover()
-        self.input_file = input_file
-        self.output_file = output_file
+        self.input_file = f"{DATA_PATH}input/Three/{file_name}.txt"
+        self.output_file = f"{DATA_PATH}states/Three/{file_name}.json"
         self.solve_to = solve_to
         self.scrambles = self.getScrambles()
         self.states = self.getStates()
@@ -27,7 +27,7 @@ class StateGenerator:
         getScrambles
         Takes data from the input file and creates a dictionary of scrambles
         """
-        with open(f"{DATA_PATH}{self.input_file}") as f:
+        with open(self.input_file) as f:
             scrambles = f.readlines()
         return {scrambles[i].strip(): scrambles[i+1].strip() for i in range(0, len(scrambles), 2)}
 
@@ -60,7 +60,7 @@ class StateGenerator:
         writeStates
         Creates a .txt file with one cubestring per line.
         """
-        with open(f"{DATA_PATH}{self.output_file}", "w") as f:
+        with open(self.output_file, "w") as f:
             json.dump(self.states, f)
 
     def _getPLLs(self):
