@@ -117,19 +117,33 @@ class Mover:
         Returns a string representing the rotations needed to get to the end
         orientation of the scramble.
         """
-        rotations = []
-        scramble = scramble.split()
-        rotationDirections = {"x": ["x", "r", "l'", "M'"], "x'": ["x'", "r'", "l", "M"],
-                              "x2": ["x2", "r2", "l2", "M2"], "y": ["y", "u", "d'", "E'"],
-                              "y'": ["y'", "u'", "u", "E"], "y2": ["y2", "u2", "d2", "E2"],
-                              "z": ["z", "f", "b'", "S"], "z'": ["z'", "f'", "b", "S'"],
-                              "z2": ["z2", "f2", "b2", "S2"]}
-        for move in scramble:
-            for dir in rotationDirections:
-                if move in rotationDirections[dir]:
-                    rotations.append(dir)
+        def checkBottom():
+            return self.cubelist[12:16] == ["D", "D", "D", "D"]
+        print(scramble)
+        cubestring = self.getCubestring()
+        self.setCubelist("UUUURRRRFFFFDDDDLLLLBBBB")
+        self.scramble(scramble)
+        print(self.cubelist)
+        ans = []
+        if not checkBottom():
+            print("ROTATING!!!")
+            for i in range(4):
+                if checkBottom():
                     break
-        return " ".join(rotations)
+                else:
+                    self.scramble("x")
+                    ans.extend("x'")
+            for i in range(4):
+                if checkBottom():
+                    break
+                else:
+                    self.scramble("z")
+                    ans.extend("z'")
+        self.setCubelist(cubestring)
+        print(ans)
+        print(" ".join(ans))
+        return " ".join(ans)
+        
 
 
     def __swapStickers(self, movePattern, start):
