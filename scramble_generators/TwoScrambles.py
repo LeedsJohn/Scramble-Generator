@@ -45,7 +45,6 @@ class ScrambleGenerator:
         scrambles = {}
         for state in self.states:
             premoveCount = 0
-            print(state)
             scrambles[state] = []
             i = 0
             while i < NUM_SCRAMBLES:
@@ -79,17 +78,12 @@ class ScrambleGenerator:
         self.mover.setCubelist(goalstring)
         self.mover.scramble(premoves)
         updatedGoalstring = self.mover.getCubestring()
-        print(self.mover)
-        print(premoves)
         scrambles = sv.solve(updatedGoalstring)
         scrambles = scrambles.split("\r\n")[:-1]
         fixed = []
         for scramble in scrambles:
-            print(f"scramble: {scramble}")
             fixedScramble = self._fixScramble(scramble, premoves, True).strip()
             fixed.append(fixedScramble)
-            print(f"fixed: {fixedScramble}")
-            print("\n-----------------------\n")
         return fixed
 
     def _randomAUF(self, goalstring):
@@ -120,7 +114,6 @@ class ScrambleGenerator:
         scramble = f"{premoves} {scramble}"
         scramble = scramble.split(" ")
         scramble = [move for move in scramble if move] # crop blank strings
-        print(scramble)
         moveFormat = []
         # turn scramble into a list of moves and how many times it was rotated
         inserted = False
@@ -128,7 +121,6 @@ class ScrambleGenerator:
         while True:
             if inserted:
                 move = scramble.pop(0)
-                print(f"MOVE: {move}")
             inserted = True
             dir = move[0]
             turns = self._turnsInAMove(move)
@@ -144,19 +136,6 @@ class ScrambleGenerator:
                     moveFormat.append([dir, turns])
             if inserted and not scramble:
                 break
-        # for move in scramble:
-        #     dir = move[0]
-        #     turns = self._turnsInAMove(move)
-        #     if not moveFormat:
-        #         moveFormat.append([dir, turns])
-        #     elif dir == moveFormat[-1][0]:
-        #         moveFormat[-1][1] += turns
-        #     else:
-        #         if moveFormat[-1][1] % 4 == 0:
-        #             moveFormat.pop()
-        #         else:
-        #             moveFormat.append([dir, turns])
-        #     print(f"move: {move}\tdir: {dir}\tturns: {turns}\n{moveFormat}")
         newScramble = []
         for move in moveFormat:
             if move[1] % 4 != 0:
