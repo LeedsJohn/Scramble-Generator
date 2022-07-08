@@ -93,6 +93,8 @@ class ScrambleGenerator:
         self.mover.setCubelist(goalstring)
         for i in range(random.randrange(0, 4)):
             self.mover.move("U")
+        for i in range(random.randrange(0, 4)):
+            self.mover.move("D")
         return self.mover.getCubestring()
 
     def _getPremove(self, numMoves=2):
