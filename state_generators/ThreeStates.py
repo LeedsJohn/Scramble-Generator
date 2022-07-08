@@ -15,7 +15,7 @@ DATA_PATH = "Data/"
 class StateGenerator:
     def __init__(self, file_name, solve_to):
         self.mover = ThreeMover.Mover()
-        self.input_file = f"{DATA_PATH}input/Three/{file_name}.txt"
+        self.input_file = f"{DATA_PATH}input/Three/{file_name}.json"
         self.output_file = f"{DATA_PATH}states/Three/{file_name}.json"
         self.solve_to = solve_to
         self.scrambles = self.getScrambles()
@@ -28,8 +28,8 @@ class StateGenerator:
         Takes data from the input file and creates a dictionary of scrambles
         """
         with open(self.input_file) as f:
-            scrambles = f.readlines()
-        return {scrambles[i].strip(): scrambles[i+1].strip() for i in range(0, len(scrambles), 2)}
+            scrambles = json.load(f)
+        return {case: scrambles[case][0] for case in scrambles}
 
     def getStates(self):
         """
